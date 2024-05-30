@@ -11,15 +11,9 @@ const AuthForm = () => {
 
   const switchAuthModeHandler = () => {
     setIsLogin((prevState) => !prevState);
-    // setIsLoading((prevState) => !prevState);
   };
-
-  const handleLoading=(e)=>{
-    e.preventDefault()
-    setIsLoading((prevState) => !prevState);
-  }
   
-  const signupHandler =async (e)=>{
+  const authHandler =async (e)=>{
     e.preventDefault()
     setIsLoading((prevState) => !prevState);
     try{
@@ -30,7 +24,10 @@ const AuthForm = () => {
         password: enteredPassword,
         returnSecureToken: true
       }
-      const response=await fetch('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=[API_KEY]',
+      
+      let reqURL=isLogin ?  'signInWithPassword' : 'signUp' 
+      
+      const response=await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:${reqURL}?key=AIzaSyDk6BaMAPvSu4Boffm_G3IV3dU7lcV03HA`,
       {
         method: 'POST',
         headers: {
@@ -39,16 +36,24 @@ const AuthForm = () => {
         body: JSON.stringify(userCreds)
       })
       
-      // if(!response.ok){
-      //   throw new Error('SOmething went wrong')
-      // }
+      if(!response.ok){
+        setIsLoading((prevState) => !prevState);
+        const data=await response.json()
+        throw new Error(data.error.message)
+      }
       if(response.ok){
         setIsLoading((prevState) => !prevState);
+        const data=await response.json()
+        console.log(data)
       }
 
     }catch(error){
       console.log(error)
-      alert('please enter correct creds')
+      alert(error)
+    }
+    finally{
+      emailReference.current.value=""
+      passwordReference.current.value=""
     }
   }
   
@@ -70,8 +75,10 @@ const AuthForm = () => {
           />
         </div>
         <div className={classes.actions}>
-          {isLogin ? (isLoading ? <p className={classes.p}>Sending Request...</p> : <button onClick={handleLoading}>Login</button>) : <button onClick={signupHandler} >Sign Up</button>}
-          {/* {isLoading && <p className={classes.p}>Sending Request...</p> } */}
+          {isLogin ? (isLoading ? <p className={classes.p}>Sending Request...</p> : 
+          <button onClick={authHandler}>Login</button>) : 
+          <button onClick={authHandler} >Sign Up</button>
+          }
           <button
             type='button'
             className={classes.toggle}
