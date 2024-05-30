@@ -19,7 +19,8 @@ const AuthForm = () => {
     setIsLoading((prevState) => !prevState);
   }
   
-  const signupHandler =async ()=>{
+  const signupHandler =async (e)=>{
+    e.preventDefault()
     setIsLoading((prevState) => !prevState);
     try{
       const enteredEmail=emailReference.current.value
@@ -29,7 +30,7 @@ const AuthForm = () => {
         password: enteredPassword,
         returnSecureToken: true
       }
-      const response=await fetch('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDk6BaMAPvSu4Boffm_G3IV3dU7lcV03HA',
+      const response=await fetch('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=[API_KEY]',
       {
         method: 'POST',
         headers: {
@@ -38,14 +39,15 @@ const AuthForm = () => {
         body: JSON.stringify(userCreds)
       })
       
-      if(!response.ok){
-        throw new Error('SOmething went wrong')
-      }
+      // if(!response.ok){
+      //   throw new Error('SOmething went wrong')
+      // }
       if(response.ok){
         setIsLoading((prevState) => !prevState);
       }
 
     }catch(error){
+      console.log(error)
       alert('please enter correct creds')
     }
   }
