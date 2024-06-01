@@ -8,6 +8,7 @@ const MainNavigation = () => {
   const AuthCtx = useContext(AuthContext)
   const logOutHandler = () => {
     AuthCtx.logout()
+    localStorage.removeItem('token')
   }
   return (
     <header className={classes.header}>

@@ -1,11 +1,14 @@
-import {useRef, useContext} from 'react' 
+import {useRef} from 'react' 
+import { useHistory } from 'react-router-dom';
 import classes from './ProfileForm.module.css';
-import AuthContext from '../../store/AuthContext';
+
 
 const ProfileForm = () => {
   const passwordRef=useRef()
   
-  const AuthCtx=useContext(AuthContext)
+  const token=localStorage.getItem('token')
+
+  const history=useHistory()
 
   
   const submitHandler=async (e)=>{
@@ -19,7 +22,7 @@ const ProfileForm = () => {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          idToken:AuthCtx.token,
+          idToken:token,
           password:enteredPassword,
           secureReferenceToken: true
         })
@@ -28,6 +31,9 @@ const ProfileForm = () => {
         throw new Error('Invalid token!!!')
       }
       // const data=response.json()
+      if(response.ok){
+        history.replace('/')
+      }
     }catch(error){
       console.log(error.message)
       alert(error.message)
