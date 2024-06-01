@@ -1,12 +1,12 @@
-import {useRef} from 'react' 
+import {useRef, useContext} from 'react' 
 import { useHistory } from 'react-router-dom';
 import classes from './ProfileForm.module.css';
-
+import AuthContext from '../../store/AuthContext';
 
 const ProfileForm = () => {
   const passwordRef=useRef()
   
-  const token=localStorage.getItem('token')
+  const AuthCtx=useContext(AuthContext)
 
   const history=useHistory()
 
@@ -22,7 +22,7 @@ const ProfileForm = () => {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          idToken:token,
+          idToken:AuthCtx.token,
           password:enteredPassword,
           secureReferenceToken: true
         })

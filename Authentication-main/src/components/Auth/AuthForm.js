@@ -51,8 +51,7 @@ const AuthForm = () => {
       if(response.ok){
         setIsLoading((prevState) => !prevState);
         const data=await response.json()
-        AuthCtx.login(data.idToken)
-        localStorage.setItem('token',data.idToken)
+        AuthCtx.login(data.idToken,data.expiresIn)
         history.replace('/')
       }
 
