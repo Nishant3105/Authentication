@@ -43,19 +43,18 @@ const AuthForm = () => {
         setIsLoading((prevState) => !prevState);
         const data=await response.json()
         throw new Error(data.error.message)
+        // throw new Error('Aunthentication failed')
       }
       if(response.ok){
         setIsLoading((prevState) => !prevState);
         const data=await response.json()
-        if(isLogin){
-          AuthCtx.logInOutState()
-          AuthCtx.setTokenVal(data.idToken)
-        }
+        AuthCtx.login(data.idToken)
         console.log(data)
       }
 
     }catch(error){
       console.log(error)
+      // console.log(error.message)
       alert(error)
     }
     finally{

@@ -4,12 +4,10 @@ import Layout from './components/Layout/Layout';
 import UserProfile from './components/Profile/UserProfile';
 import AuthPage from './pages/AuthPage';
 import HomePage from './pages/HomePage';
-import AuthContextProvider from './store/AuthContextProvider';
 
 
 function App() {
   return (
-    <AuthContextProvider>
       <Layout>
         <Switch>
           <Route path='/' exact>
@@ -23,7 +21,6 @@ function App() {
           </Route>
         </Switch>
       </Layout>
-    </AuthContextProvider>
   );
 }
 
