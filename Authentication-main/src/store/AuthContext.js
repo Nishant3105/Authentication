@@ -13,11 +13,13 @@ export const AuthContextProvider = (props) => {
     const [token, setToken] = useState(innitialTokenValue)
 
     const useLoggedInVal = !!token
+    
+    let timer:
 
     const logInHandler = (tokenValue, expiry) => {
         localStorage.setItem('token', tokenValue)
         setToken(tokenValue)
-        setTimeout(()=>{
+        timer=setTimeout(()=>{
             alert('Please Login Again!!')
             logOutHandler()
         },300000)
@@ -26,6 +28,7 @@ export const AuthContextProvider = (props) => {
     const logOutHandler = () => {
         localStorage.removeItem('token')
         setToken(null)
+        clearTimeout(timer)
     }
 
     const contextValues = {
